@@ -9,15 +9,22 @@ pipeline {
             }
         }
       stage('Unit Test'){
-		steps{
-			sh "mvn test" 
-		}
-		post {
-			always {
-				junit 'target/surefire-reports/*.xml'
-				jacoco execPattern: 'target/jacoco.exec'
-			}	
-		}
-	}  
+            steps{
+              sh "mvn test" 
+            }
+          post {
+            always {
+              junit 'target/surefire-reports/*.xml'
+              jacoco execPattern: 'target/jacoco.exec'
+            }	
+          }
+	      }
+
+        stage('docker build and push'){
+          steps{
+            sh 'docker build -t abdelhameed208/numeric-app:""$GIT_COMMIT"" .'
+            sh 'docker push abdelhameed208/numeric-app:""$GIT_COMMIT'
+          }
+        }
     }
 }
