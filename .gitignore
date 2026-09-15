@@ -26,3 +26,6 @@ bin
 .classpath
 .project
 target
+
+
+talisman_repor/*

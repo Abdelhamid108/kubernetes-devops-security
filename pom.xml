@@ -41,32 +41,60 @@
 
 	<build>
 		<plugins>
+
+			<!-- Spring Boot -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 
+			<!-- JaCoCo -->
 			<plugin>
-  				 <groupId>org.jacoco</groupId>
-  				 <artifactId>jacoco-maven-plugin</artifactId>
-   				 <version>0.8.13</version>
-   				 <executions>
-        				<execution>
-            					<goals>
-                					<goal>prepare-agent</goal>
-            					</goals>
-        				 </execution>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.13</version>
 
-       					 <execution>
-            					<id>report</id>
-            					<phase>test</phase>
-            					<goals>
-                					<goal>report</goal>
-            					</goals>
-        				 </execution> 
-				 </executions>
-	                </plugin>
-			
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+
+					<execution>
+						<id>report</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- PIT Mutation Testing -->
+			<plugin>
+				<groupId>org.pitest</groupId>
+				<artifactId>pitest-maven</artifactId>
+				<version>1.5.0</version>
+
+				<dependencies>
+					<dependency>
+						<groupId>org.pitest</groupId>
+						<artifactId>pitest-junit5-plugin</artifactId>
+						<version>0.12</version>
+					</dependency>
+				</dependencies>
+
+				<configuration>
+					<mutationThreshold>70</mutationThreshold>
+
+					<outputFormats>
+						<outputFormat>HTML</outputFormat>
+						<outputFormat>XML</outputFormat>
+					</outputFormats>
+				</configuration>
+			</plugin>
+
 		</plugins>
 	</build>
 
