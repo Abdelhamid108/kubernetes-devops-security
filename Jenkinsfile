@@ -29,6 +29,18 @@ pipeline {
             }
           }
         }
+        stage('SonarQube - SAST'){
+          steps{
+            withCredntials([string(credntailsId: 'sonar-token', variable: 'SONAR_TOKEN')]){
+              sh '''
+                mvn sonar:sonar \
+                  -Dsonar.projectKey=Abdelhamid108_kubernetes-devops-security \
+                  -Dsonar.organization=abdelhamid108 \
+                  -Dsonar.token=$SONAR_TOKEN
+              '''
+            }
+          }
+        }
         stage('docker build and push'){
             steps{
              withDockerRegistry([credentialsId: "docker-hub-creds", url: ""]) {
