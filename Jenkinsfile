@@ -29,18 +29,25 @@ pipeline {
             }
           }
         }
-        stage('SonarQube - SAST'){
-          steps{
-            withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]){
+        stage('SonarQube Analysis') {
+          steps {
+            withSonarQubeEnv('sonar-local') {
+
               sh '''
-                mvn sonar:sonar \
-                  -Dsonar.projectKey=Abdelhamid108_kubernetes-devops-security \
-                  -Dsonar.organization=abdelhamid108 \
-                  -Dsonar.token=$SONAR_TOKEN
+                  mvn clean verify \
+                    org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+                    -Dsonar.projectKey=Kubernetes-devsecops \
+                    -Dsonar.projectName=Kubernetes-devsecops
               '''
             }
+
+            timeout(time: 2, unit: 'MINUTES') {
+              script {
+                  waitForQualityGate abortPipeline: true
+              }
           }
         }
+    }
         stage('docker build and push'){
             steps{
              withDockerRegistry([credentialsId: "docker-hub-creds", url: ""]) {
