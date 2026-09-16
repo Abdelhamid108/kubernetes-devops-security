@@ -31,7 +31,7 @@ pipeline {
         }
         stage('SonarQube - SAST'){
           steps{
-            withCredentials([string(credentailsId: 'sonar-token', variable: 'SONAR_TOKEN')]){
+            withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]){
               sh '''
                 mvn sonar:sonar \
                   -Dsonar.projectKey=Abdelhamid108_kubernetes-devops-security \
