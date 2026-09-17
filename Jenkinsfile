@@ -43,11 +43,21 @@ pipeline {
 
             timeout(time: 2, unit: 'MINUTES') {
               script {
-                  waitForQualityGate abortPipeline: true
+                waitForQualityGate abortPipeline: true
               }
+            }
           }
         }
-    }
+        stage('Vulnerability Scan - Docker'){
+          steps{
+            sh "mvn dependency-check:check"
+          }
+          post {
+            always {
+              dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
+            }
+          }
+        }
         stage('docker build and push'){
             steps{
              withDockerRegistry([credentialsId: "docker-hub-creds", url: ""]) {
