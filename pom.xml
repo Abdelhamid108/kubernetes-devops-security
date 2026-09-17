@@ -102,11 +102,9 @@
     			<version>5.5.0.6356</version>
 			</plugin>
 
-
 			<!-- Dependency Check Plugin -->
 			<plugin>
-
-				<groupId>org. owasp</groupId>
+				<groupId>org.owasp</groupId>
 				<artifactId>dependency-check-maven</artifactId>
 				<version>6.1.6</version>
 				<configuration>
