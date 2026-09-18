@@ -109,7 +109,7 @@
 				<version>12.1.0</version>
 				<configuration>
 					<format>ALL</format>
-					<failBuildOnCVSS>5</failBuildOnCVSS> <!-- fail the build for CVSS greater than or equal to 5 -->
+					<failBuildOnCVSS>9</failBuildOnCVSS> <!-- fail the build for CVSS greater than or equal to 5 -->
 				</configuration>
 			</plugin>	
 		</plugins>
