@@ -1,8 +1,8 @@
 dockerImageName=$(awk 'NR==1 {print $2}' Dockerfile)
 echo $dockerImageName
 
-docker run --rm -v $WORKSPACE/root/.cache/ aquasec/trivy:0.74.0 -q image --exit-code 0 --severity HIGH --light $dockerImageName
-docker run --rm -v $WORKSPACE/root/.cache/ aquasec/trivy:0.74.0 -q image --exit-code 1 --severity HIGH --light $dockerImageName
+docker run --rm -v $WORKSPACE/root/.cache/ aquasec/trivy:0.74.0 -q image --timeout 15m --exit-code 0 --severity HIGH --light $dockerImageName
+docker run --rm -v $WORKSPACE/root/.cache/ aquasec/trivy:0.74.0 -q image --timeout 15m --exit-code 1 --severity HIGH --light $dockerImageName
 
 exit_code=$?
 echo "Exit Code: $exit_code"
