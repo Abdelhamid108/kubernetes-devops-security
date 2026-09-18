@@ -23,8 +23,7 @@ pipeline {
             withSonarQubeEnv('sonar-local') {
 
               sh '''
-                  mvn clean verify \
-                    org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+                  mvn sonar:sonar \
                     -Dsonar.projectKey=Kubernetes-devsecops \
                     -Dsonar.projectName=Kubernetes-devsecops
               '''
@@ -72,7 +71,7 @@ pipeline {
         always {
           junit 'target/surefire-reports/*.xml'
           jacoco execPattern: 'target/jacoco.exec'
-          pitmutation mutationStatsFile:'**/target/pit-reports/**/mutations.xml'
+          pitmutation mutationStatsFile: '**/target/pit-reports/**/mutations.xml'
           dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
         }
       }
