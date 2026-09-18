@@ -111,7 +111,6 @@
 					<format>ALL</format>
 					<failBuildOnCVSS>10</failBuildOnCVSS> <!-- fail the build for CVSS greater than or equal to 5 -->
 					<ossIndexAnalyzerEnabled>false</ossIndexAnalyzerEnabled>
-
 				</configuration>
 			</plugin>	
 		</plugins>
