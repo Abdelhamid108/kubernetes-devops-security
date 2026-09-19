@@ -1,4 +1,4 @@
-FROM eclipse-temurin:11.0.32_9-jre-alpine-3.24
+FROM eclipse-temurin:17.0.20_8-jre-alpine-3.24
 
 EXPOSE 8080
 
