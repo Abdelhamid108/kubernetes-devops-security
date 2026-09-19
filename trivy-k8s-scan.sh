@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 set -o errexit
+
+docker volume inspect trivy-cache >/dev/null 2>&1 || \
+    docker volume create trivy-cache 
+    
 echo "Scanning image: $imageName"
 
 # 1. Report LOW, MEDIUM, HIGH (non-blocking)

@@ -84,6 +84,10 @@ fileignoreconfig:
 - filename: Jenkinsfile
   checksum: d3dae0ee3344fc8cb2ff373af0bd93ece38ee09ea20116faddf72ce2abe2cc57
 version: "1.0"
+fileignoreconfig:
+- filename: trivy-k8s-scan.sh
+  checksum: 959a178c4793f5b68cbc79bcd2e820c3a6e1c92b53f03ebe2fae91524bd5d987
+version: "1.0"
 
 
 
