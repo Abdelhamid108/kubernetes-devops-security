@@ -4,10 +4,10 @@ EXPOSE 8080
 
 ARG JAR_FILE=target/*.jar
 
-RUN addgroup -S pipeline && adduser -S k8s-pipeline -G pipeline
+RUN addgroup -S -g 10001 pipeline &&  adduser -S -u 10001 -G pipeline k8s-pipeline
 
-COPY  ${JAR_FILE} home/k8s-pipeline/app.jar
+COPY --chown=10001:10001 ${JAR_FILE} /home/k8s-pipeline/app.jar
 
-USER k8s-pipeline
+USER 10001:10001
 
-ENTRYPOINT ["java","-jar","home/k8s-pipeline/app.jar"]
+ENTRYPOINT ["java", "-jar", "/home/k8s-pipeline/app.jar"]
