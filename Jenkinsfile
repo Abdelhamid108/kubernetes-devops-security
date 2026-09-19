@@ -47,7 +47,10 @@ pipeline {
               },
               "OPA Dokcerfile Scan":{
              	sh '''
-   			 docker run --rm \
+   			pwd
+   	 		ls -la
+			
+			 docker run --rm \
       			-v "$WORKSPACE:/project" \
       			-w /project \
       			openpolicyagent/conftest \
