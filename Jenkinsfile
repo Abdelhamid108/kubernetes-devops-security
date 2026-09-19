@@ -94,7 +94,7 @@ pipeline {
                       -w /project \
                       openpolicyagent/conftest \
                       test \
-                      --policy opa-k8s-security.rego \
+                      --policy kubernetes_security_opa.rego \
                       k8s_deployment_service.yaml
                 '''
             }
