@@ -78,6 +78,12 @@ fileignoreconfig:
 - filename: Jenkinsfile
   checksum: 1477ba9cbb01a2cf1992c9502080ad2abaf63c208121168b1f8179c9af3426ad
 version: "1.0"
+fileignoreconfig:
+- filename: kubesec_scan.sh
+  checksum: 4a314949e0613561a28986e572ee700574f526875dac66943ce7cdf988f3b7e9
+- filename: Jenkinsfile
+  checksum: d3dae0ee3344fc8cb2ff373af0bd93ece38ee09ea20116faddf72ce2abe2cc57
+version: "1.0"
 
 
 
