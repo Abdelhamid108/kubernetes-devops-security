@@ -29,11 +29,18 @@ spec:
         seccompProfile:
           type: RuntimeDefault
         appArmorProfile:
-          type: RuntimeDefault  
+          type: RuntimeDefault 
+      volumes:
+        - name: tmp-vol
+          emptyDir: {}
+
 
       containers:
         - name: devsecops-container
           image: replace
+          volumeMounts:
+            - name: tmp-vol
+              mountPath: /tmp
 
           securityContext:
             runAsNonRoot: true
