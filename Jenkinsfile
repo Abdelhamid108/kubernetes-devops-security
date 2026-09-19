@@ -3,6 +3,12 @@ pipeline {
 
     environment {
         HOST_WORKSPACE = "/var/lib/docker/volumes/jenkins_home/workspace/$JOB_NAME"
+        deploymentName = 'devsecops'
+        containerName  = 'devsecops-container'
+        serviceName    = 'devsecops-svc'
+        imageName      = "abdelhameed208/numeric-app:${GIT_COMMIT}"
+        applicationURL = 'http://192.168.239.132/'
+        applicationURI = '/increment/99'
     }
 
     stages {
@@ -106,18 +112,25 @@ pipeline {
                     credentialsId: 'jenkins-kubernetes-token',
                     serverUrl: 'https://192.168.239.132:6443'
                 ]) {
-                    sh '''
-                        sed -i \
-                          "s#replace#abdelhameed208/numeric-app:${GIT_COMMIT}#g" \
-                          k8s_deployment_service.yaml
-
-                        kubectl version
-                        kubectl apply -f k8s_deployment_service.yaml
-                    '''
+                    sh "bash ./k8s-deployment.sh"
                 }
             }
         }
+	stage('Wating for Rollout'){
+	   steps{
+                sleep time: 60, unit: 'SECONDS'
+
+		withKubeConfig([
+                    credentialsId: 'jenkins-kubernetes-token',
+                    serverUrl: 'https://192.168.239.132:6443'
+                ]) { 
+                   sh "bash ./k8s-deployment-rollout-status.sh"
+                 }
+	   } 	 
+	}
     }
+	
+	
 
     post {
         always {
