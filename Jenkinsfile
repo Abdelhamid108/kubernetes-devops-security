@@ -94,15 +94,23 @@ pipeline {
 
         stage('Kubernetes Vulnerability Scan') {
             steps {
-                sh '''
-                    docker run --rm \
-                      -v "$HOST_WORKSPACE:/project" \
-                      -w /project \
-                      openpolicyagent/conftest \
-                      test \
-                      --policy kubernetes_security_opa.rego \
-                      k8s_deployment_service.yaml
-                '''
+                parallel (
+                    "OPA Scan":{ 
+                        sh '''
+                        docker run --rm \
+                            -v "$HOST_WORKSPACE:/project" \
+                            -w /project \
+                            openpolicyagent/conftest \
+                            test \
+                            --policy kubernetes_security_opa.rego \
+                            k8s_deployment_service.yaml
+                        '''
+                    },
+
+                    "kubeSec Scan":{
+                        sh "bash kubesec_scan.sh"
+                    }
+                )  
             }
         }
 
