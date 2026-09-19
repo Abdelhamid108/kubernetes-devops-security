@@ -44,39 +44,31 @@ pipeline {
             }
         }
 
-        stage('Vulnerability Scan - Docker') {
-            steps {
-                parallel {
+	stage('Vulnerability Scan - Docker') {
+ 	   steps {
+        	parallel(
+            		"Dependency Scan": {
+                		sh 'mvn dependency-check:check -DossindexAnalyzerEnabled=false'
+            			},
 
-                    stage('Dependency Scan') {
-                        steps {
-                            sh 'mvn dependency-check:check -DossindexAnalyzerEnabled=false'
-                        }
-                    }
+            		"Trivy Scan": {
+                		sh 'bash trivy-docker-image-scan.sh'
+            			},
 
-                    stage('Trivy Scan') {
-                        steps {
-                            sh 'bash trivy-docker-image-scan.sh'
-                        }
-                    }
-
-                    stage('OPA Dockerfile Scan') {
-                        steps {
-                            sh '''
-                                docker run --rm \
-                                  -v "$HOST_WORKSPACE:/project" \
-                                  -w /project \
-                                  openpolicyagent/conftest \
-                                  test \
-                                  --policy dockerfile_security.rego \
-                                  Dockerfile
-                            '''
-                        }
-                    }
-                }
-            }
-        }
-
+            		"OPA Dockerfile Scan": {
+               			 sh '''
+                   		 docker run --rm \
+                      		-v "$HOST_WORKSPACE:/project" \
+                      		-w /project \
+                      		openpolicyagent/conftest \
+                      		test \
+                      		--policy dockerfile_security.rego \
+                      		Dockerfile
+                		'''
+            			}
+        		)
+    		}	
+	}
         stage('Docker Build and Push') {
             steps {
                 withDockerRegistry([
