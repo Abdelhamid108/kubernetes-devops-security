@@ -47,11 +47,10 @@ pipeline {
               },
               "OPA Dokcerfile Scan":{
              	sh '''
-   			pwd
-   	 		ls -la
-			
-			 docker run --rm \
-      			-v "$WORKSPACE:/project" \
+			HOST_WORKSPACE="/var/lib/docker/volumes/jenkins_home/workspace/$JOB_NAME"
+			 
+			docker run --rm \
+      			-v "$HOST_WORKSPACE:/project" \
       			-w /project \
       			openpolicyagent/conftest \
       			test \
