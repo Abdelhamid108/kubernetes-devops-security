@@ -26,9 +26,6 @@ spec:
       hostUsers: false
 
       securityContext:
-        runAsNonRoot: true
-        runAsUser: 10001
-        runAsGroup: 10001
         seccompProfile:
           type: RuntimeDefault
         appArmorProfile:
@@ -39,8 +36,10 @@ spec:
           image: replace
 
           securityContext:
+            runAsNonRoot: true
+            runAsUser: 10001
+            runAsGroup: 10001
             allowPrivilegeEscalation: false
-
             capabilities:
               drop:
                 - ALL
