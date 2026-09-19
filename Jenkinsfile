@@ -111,7 +111,7 @@ pipeline {
                         sh "bash kubesec_scan.sh"
                     },
 
-                    "trivy scan" {
+                    "trivy scan": {
                         sh "bash trivy-k8s-scan.sh"
                     }
                 )  
