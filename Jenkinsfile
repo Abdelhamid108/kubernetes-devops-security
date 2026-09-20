@@ -185,6 +185,7 @@ pipeline {
                 tools: [[
                     parser: 'PIT',
                     pattern: 'target/pit-reports/**/mutations.xml'
+                    alwaysRun: true
                 ]]
             )
             
