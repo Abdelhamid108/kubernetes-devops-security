@@ -162,10 +162,18 @@ pipeline {
                 }
             }
         }
+        stage('OWAS ZAP - DAST SCAN'){
+            steps{
+                withKubeConfig([
+                    credentialsId: 'jenkins-kubernetes-token',
+                    serverUrl: 'https://192.168.239.132:6443'
+                ]) {
+                    sh "bash owasp_zap.sh"
+                }
+            }
+        }
 
     }
-	
-	
 
     post {
         always {
@@ -173,13 +181,25 @@ pipeline {
 
             jacoco execPattern: 'target/jacoco.exec'
 
-        recordCoverage(
-            tools: [[
-                parser: 'PIT',
-                pattern: 'target/pit-reports/**/mutations.xml'
-            ]]
-        )
+            recordCoverage(
+                tools: [[
+                    parser: 'PIT',
+                    pattern: 'target/pit-reports/**/mutations.xml'
+                ]]
+            )
+            
             dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
+
+            publishHTML(
+                allowMissing: false,
+                alwaysLinkToLastBuild: true,
+                keepAll: true,
+                reportDir: 'owasp-zap-report',
+                reportFiles: 'zap_report.html',
+                reportName: 'OWASP ZAP HTML Report',
+                reportTitles: 'OWASP ZAP HTML Report'
+            )
         }
+
     }
 }
