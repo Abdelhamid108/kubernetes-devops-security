@@ -186,7 +186,7 @@ pipeline {
                     parser: 'PIT',
                     pattern: 'target/pit-reports/**/mutations.xml'
                 ]],
-                ignoreFailedBuilds: true
+                enabledForFailure: true
             )
             
             dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
