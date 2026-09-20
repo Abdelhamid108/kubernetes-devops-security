@@ -128,18 +128,41 @@ pipeline {
                 }
             }
         }
-	stage('Wating for Rollout'){
-	   steps{
-                sleep time: 60, unit: 'SECONDS'
+	    stage('Wating for Rollout'){
+	        steps{
+                sleep time: 80, unit: 'SECONDS'
 
-		withKubeConfig([
+		    withKubeConfig([
                     credentialsId: 'jenkins-kubernetes-token',
                     serverUrl: 'https://192.168.239.132:6443'
                 ]) { 
                    sh "bash ./k8s-deployment-rollout-status.sh"
                  }
-	   } 	 
-	}
+	        } 	 
+	    }
+        stage('Integration Test - Dev'){
+            steps{
+                script{
+                    try {
+                        withKubeConfig([
+                            credentialsId: 'jenkins-kubernetes-token',
+                            serverUrl: 'https://192.168.239.132:6443'
+                        ]) {
+                            sh "bash integration-test.sh"
+                        }
+                    } catch (e) {
+                        withKubeConfig([
+                            credentialsId: 'jenkins-kubernetes-token',
+                            serverUrl: 'https://192.168.239.132:6443'
+                        ]) {
+                            sh "kubectl -n default rollout undo deploy ${deploymentName}"
+                        }
+                        error("Integration tests failed, rolled back deployment.")
+                    }
+                }
+            }
+        }
+
     }
 	
 	
