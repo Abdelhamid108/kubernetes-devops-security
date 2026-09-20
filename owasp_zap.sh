@@ -9,7 +9,7 @@ chmod 777 $(pwd)
 # Run the OWASP ZAP API scan against the OpenAPI spec
 docker run \
   -v $HOST_WORKSPACE:/zap/wrk/:rw \
-  -t owasp/zap2docker-weekly \
+  -t ghcr.io/zaproxy/zaproxy:weekly \
   zap-api-scan.py \
     -t $applicationURL:$PORT/v3/api-docs \
     -f openapi \
