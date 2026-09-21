@@ -147,14 +147,10 @@ fileignoreconfig:
   checksum: 407e2a8dc62fce5c746cddf206eb7673d0308956a9251d1dd71c7ce8f6017b64
 version: "1.0"
 fileignoreconfig:
-- filename: Jenkinsfile
-  checksum: 3e97ecbfe0f48a62dd80ad98c5b79f16e6edbaf4a817e3f6f701c14169a251c2
-version: "1.0"
-fileignoreconfig:
-- filename: cis-kubelet.sh
-  checksum: a01e3f90e40e472da17102b3b783058911dffa6b8d6478da3f1244dec34e55a4
 - filename: cis-etcd.sh
   checksum: 97cd3c3749a50d474cb68c1d2179cbeed9e6e7314c5eca14baef07d564027536
+- filename: cis-kubelet.sh
+  checksum: a01e3f90e40e472da17102b3b783058911dffa6b8d6478da3f1244dec34e55a4
 - filename: cis-master.sh
   checksum: 407e2a8dc62fce5c746cddf206eb7673d0308956a9251d1dd71c7ce8f6017b64
 version: "1.0"
