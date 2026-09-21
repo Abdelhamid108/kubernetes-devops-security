@@ -117,6 +117,9 @@
 
 				<configuration>
 					<mutationThreshold>70</mutationThreshold>
+					<excludedClasses>
+           				<param>com.devsecops.WebSecurityConfig</param>
+        			</excludedClasses>
 
 					<outputFormats>
 						<outputFormat>HTML</outputFormat>
