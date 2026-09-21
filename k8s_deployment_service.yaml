@@ -55,11 +55,11 @@ spec:
 
           resources:
             requests:
-              cpu: "25m"
-              memory: "50Mi"
+              cpu: "50m"
+              memory: "100Mi"
 
             limits:
-              cpu: "200m"
+              cpu: "400m"
               memory: "512Mi"
 
 ---
