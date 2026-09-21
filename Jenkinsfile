@@ -174,6 +174,29 @@ pipeline {
                 }
             }
         }
+        stage('Approval for Producation Promotion'){
+            steps{
+                timeout(time: 2, unit: 'DAYS') {
+                    input message: 'Approve deployment to Production Environment/Namespace?'
+                }
+            }
+        }
+        stage('CIS Benchmark Simple test'){
+            steps {
+                parallel (
+                    "Master": {
+                        sh "bash cis-master.sh"
+                    },
+                    "Kubelet": {
+                        sh "bash cis-kubelet.sh"
+                    },
+                    "Etcd"{
+                        sh "bash cis-etcd.sh"
+                    }
+
+                )
+            }
+        }
 
     }
 
@@ -202,7 +225,7 @@ pipeline {
                 reportName: 'OWASP ZAP HTML Report',
                 reportTitles: 'OWASP ZAP HTML Report'
             )
-            
+
             sendNotification currentBuild.result
         }
 
