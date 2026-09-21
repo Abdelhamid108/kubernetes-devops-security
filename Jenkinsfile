@@ -1,3 +1,5 @@
+@Library('slack')_
+
 pipeline {
     agent any
 
@@ -200,6 +202,8 @@ pipeline {
                 reportName: 'OWASP ZAP HTML Report',
                 reportTitles: 'OWASP ZAP HTML Report'
             )
+            
+            sendNotification currentBuild.result
         }
 
     }
