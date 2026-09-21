@@ -190,10 +190,9 @@ pipeline {
                     "Kubelet": {
                         sh "bash cis-kubelet.sh"
                     },
-                    "Etcd"{
+                    "Etcd": {
                         sh "bash cis-etcd.sh"
                     }
-
                 )
             }
         }
