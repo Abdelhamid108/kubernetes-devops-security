@@ -196,6 +196,29 @@ pipeline {
                 )
             }
         }
+        stage('K8S DEPLOYEMNT - PROD'){
+            steps{
+                parallel(
+                    "DEPLOYMENT": {
+                        withKubeConfig([
+                            credentialsId: 'jenkins-kubernetes-token',
+                            serverUrl: 'https://192.168.239.132:6443'
+                        ]) {
+                            sh "sed -i 's#replace#${imageName}#g' k8s_PROD-deployment_service.yaml"
+                            sh "kubectl -n prod apply -f k8s_PROD-deployment_service.yaml"                        
+                        }
+                    },
+                    "Rollout Status": {
+                        withKubeConfig([
+                            credentialsId: 'jenkins-kubernetes-token',
+                            serverUrl: 'https://192.168.239.132:6443'
+                        ]){
+                            sh "bash k8s-PROD-deployment-rollout-status.sh"
+                        }
+                    }
+                )
+            }
+        }
 
     }
 

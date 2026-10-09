@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devsecops
+  labels:
+    app: devsecops
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: devsecops
+  template:
+    metadata:
+      labels:
+        app: devsecops
+    spec:
+      serviceAccountName: default
+      volumes:
+        - name: vol
+          emptyDir: {}
+      containers:
+        - name: devsecops-container
+          image: replace
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - mountPath: /tmp
+              name: vol
+          securityContext:
+            capabilities:
+              drop:
+                - NET_RAW
+            runAsUser: 100
+            runAsNonRoot: true
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "200m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: devsecops-svc
+  labels:
+    app: devsecops
+spec:
+  type: ClusterIP
+  selector:
+    app: devsecops
+  ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
