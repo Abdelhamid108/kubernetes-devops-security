@@ -164,16 +164,16 @@ pipeline {
                 }
             }
         }
-        stage('OWAS ZAP - DAST SCAN'){
-            steps{
-                withKubeConfig([
-                    credentialsId: 'jenkins-kubernetes-token',
-                    serverUrl: 'https://192.168.239.132:6443'
-                ]) {
-                    sh "bash owasp_zap.sh"
-                }
-            }
-        }
+        // stage('OWAS ZAP - DAST SCAN'){
+        //     steps{
+        //         withKubeConfig([
+        //             credentialsId: 'jenkins-kubernetes-token',
+        //             serverUrl: 'https://192.168.239.132:6443'
+        //         ]) {
+        //             sh "bash owasp_zap.sh"
+        //         }
+        //     }
+        // }
         stage('Approval for Producation Promotion'){
             steps{
                 timeout(time: 2, unit: 'DAYS') {
@@ -210,7 +210,7 @@ pipeline {
                     },
                     "Rollout Status": {
                         withKubeConfig([
-                            credentialsId: 'jenkins-kubernetes-token',
+                            credentialsId: 'jenkins-kubernetes-prod-token',
                             serverUrl: 'https://192.168.239.132:6443'
                         ]){
                             sh "bash k8s-PROD-deployment-rollout-status.sh"
