@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -24,5 +25,11 @@ class WebSecurityConfigTest {
                 .andExpect(header().string("X-Content-Type-Options", "nosniff"))
                 // Verify Cross-Origin-Resource-Policy header
                 .andExpect(header().string("Cross-Origin-Resource-Policy", "same-origin"));
+    }
+
+    @Test
+    void rejectsStateChangingRequestWithoutCsrfToken() throws Exception {
+        mockMvc.perform(post("/"))
+                .andExpect(status().isForbidden());
     }
 }
