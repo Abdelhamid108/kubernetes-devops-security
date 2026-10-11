@@ -132,7 +132,7 @@ pipeline {
         }
 	    stage('Wating for Rollout'){
 	        steps{
-                sleep time: 100, unit: 'SECONDS'
+                sleep time: 120, unit: 'SECONDS'
 
 		    withKubeConfig([
                     credentialsId: 'jenkins-kubernetes-token',
@@ -198,25 +198,26 @@ pipeline {
         }
         stage('K8S DEPLOYEMNT - PROD'){
             steps{
-                parallel(
-                    "DEPLOYMENT": {
-                        withKubeConfig([
-                            credentialsId: 'jenkins-kubernetes-token',
-                            serverUrl: 'https://192.168.239.132:6443'
-                        ]) {
-                            sh "sed -i 's#replace#${imageName}#g' k8s_PROD-deployment_service.yaml"
-                            sh "kubectl -n prod apply -f k8s_PROD-deployment_service.yaml"                        
-                        }
-                    },
-                    "Rollout Status": {
-                        withKubeConfig([
-                            credentialsId: 'jenkins-kubernetes-prod-token',
-                            serverUrl: 'https://192.168.239.132:6443'
-                        ]){
-                            sh "bash k8s-PROD-deployment-rollout-status.sh"
-                        }
-                    }
-                )
+                withKubeConfig([
+                    credentialsId: 'jenkins-kubernetes-token',
+                    namespace: 'prod',
+                    serverUrl: 'https://192.168.239.132:6443'
+                ]) {
+                    sh "sed -i 's#replace#${imageName}#g' k8s_PROD-deployment_service.yaml"
+                    sh "kubectl -n prod apply -f k8s_PROD-deployment_service.yaml"                        
+                }
+            }
+        }
+        stage("Rollout Status for Prod Deployemnt"){
+            steps{
+                sleep time: 120, unit: 'SECONDS'
+                withKubeConfig([
+                    credentialsId: 'jenkins-kubernetes-prod-token',
+                    namespace: 'prod',
+                    serverUrl: 'https://192.168.239.132:6443'
+                ]){
+                    sh "bash k8s-PROD-deployment-rollout-status.sh"
+                }
             }
         }
 
