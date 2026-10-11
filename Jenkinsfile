@@ -132,7 +132,7 @@ pipeline {
         }
 	    stage('Wating for Rollout'){
 	        steps{
-                sleep time: 120, unit: 'SECONDS'
+                sleep time: 180, unit: 'SECONDS'
 
 		    withKubeConfig([
                     credentialsId: 'jenkins-kubernetes-token',
@@ -210,7 +210,7 @@ pipeline {
         }
         stage("Rollout Status for Prod Deployemnt"){
             steps{
-                sleep time: 120, unit: 'SECONDS'
+                sleep time: 180, unit: 'SECONDS'
                 withKubeConfig([
                     credentialsId: 'jenkins-kubernetes-prod-token',
                     namespace: 'prod',
