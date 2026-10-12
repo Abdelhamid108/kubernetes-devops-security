@@ -199,7 +199,7 @@ pipeline {
         stage('K8S DEPLOYEMNT - PROD'){
             steps{
                 withKubeConfig([
-                    credentialsId: 'jenkins-kubernetes-token',
+                    credentialsId: 'jenkins-kubernetes-prod-token',
                     namespace: 'prod',
                     serverUrl: 'https://192.168.239.132:6443'
                 ]) {
